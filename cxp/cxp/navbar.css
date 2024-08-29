@@ -1,0 +1,47 @@
+body {
+    background-image: url("assets/floor_bg_1.jpg");
+    background-repeat: no-repeat;
+}
+
+#navbar{
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #000;
+    opacity: 70%;
+    align-items:center;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    box-sizing: border-box;
+}
+
+#navbar a{
+    text-decoration: none;
+    font-size: 25px;
+    color: #fff;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 1);
+    margin-top: 18px;
+    text-align: center;
+    padding: 5px 40px;
+    box-sizing: border-box;
+}
+
+#navbar text{
+    opacity: 100%;
+    color: #fff;
+}
+
+#navbar a:hover {
+    background-color: #fff;
+    opacity: 100%;
+    color: #000;
+}
+
