@@ -1,0 +1,22 @@
+<div class="container">
+  <label for="author-select">Author</label>
+  <select id="author-select" [(ngModel)]="selectedAuthor" (change)="onAuthorChange()">
+    <option value="">All Authors</option>
+    <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
+  </select>
+
+  <div class="photo-grid">
+    <div class="photo-card" *ngFor="let photo of photos">
+      <img [src]="photo.download_url" alt="{{ photo.author }}" class="photo">
+      <h3>{{ photo.author }}</h3>
+      <p>text</p>
+    </div>
+  </div>
+
+  <app-pagination
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+</div>
+
