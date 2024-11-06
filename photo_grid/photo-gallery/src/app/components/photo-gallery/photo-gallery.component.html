@@ -6,7 +6,7 @@
   </select>
 
   <div class="photo-grid">
-    <div class="photo-card" *ngFor="let photo of photos">
+    <div class="photo-card" *ngFor="let photo of filteredPhotos">
       <img [src]="photo.download_url" alt="{{ photo.author }}" class="photo">
       <h3>{{ photo.author }}</h3>
       <p>text</p>

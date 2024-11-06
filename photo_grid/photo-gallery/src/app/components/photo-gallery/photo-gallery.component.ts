@@ -20,10 +20,11 @@ interface Photo {
 })
 export class PhotoGalleryComponent implements OnInit {
   photos: Photo[] = [];
+  filteredPhotos: Photo[] = [];
   authors: string[] = [];
   selectedAuthor: string = '';
   currentPage: number = 1;
-  pageSize: number = 6;
+  pageSize: number = 60;
 
   constructor(private photoService: PhotoService) {
   }
@@ -36,12 +37,21 @@ export class PhotoGalleryComponent implements OnInit {
     this.photoService.getPhotos(this.currentPage, this.pageSize).subscribe((data) => {
       this.photos = data;
       this.authors = [...new Set(data.map(photo => photo.author))];
+      this.applyFilter();
     });
+  }
+
+  applyFilter(): void {
+    if (this.selectedAuthor) {
+      this.filteredPhotos = this.photos.filter(photo => photo.author === this.selectedAuthor);
+    } else {
+      this.filteredPhotos = [...this.photos];
+    }
   }
 
   onAuthorChange(): void {
     this.currentPage = 1;
-    this.fetchPhotos();
+    this.applyFilter();
   }
 
   onPageChange(newPage: number): void {
