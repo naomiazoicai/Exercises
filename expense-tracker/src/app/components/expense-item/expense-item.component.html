@@ -1,0 +1,13 @@
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Category</mat-label>
+    <mat-select [(ngModel)]="newExpense.category">
+      <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Amount</mat-label>
+    <input matInput [(ngModel)]="newExpense.amount" type="number" />
+  </mat-form-field>
+  <button mat-button (click)="saveExpense()">Save</button>
+</div>

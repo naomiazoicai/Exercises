@@ -1,0 +1,7 @@
+<div *ngFor="let expense of expenses; let i = index">
+  <div class="expense-item">
+    <span>{{ expense.day }} - {{ expense.category }}: {{ expense.amount | currency }}</span>
+    <button mat-button (click)="onEdit(i)">Edit</button>
+    <button mat-button (click)="onDelete(i)">Delete</button>
+  </div>
+</div>

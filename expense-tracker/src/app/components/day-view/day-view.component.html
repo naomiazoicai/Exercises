@@ -1,0 +1,27 @@
+<h2>{{ days[currentDay] }}</h2>
+
+<app-expense-item (save)="addExpense($event)"></app-expense-item>
+<!--<app-daily-expenses></app-daily-expenses>-->
+<app-expense-list [expenses]="expenses" (deleteExpense)="deleteExpense($event)" (editExpense)="editExpense($event)"></app-expense-list>
+
+<div>
+  <h3>Total: {{ getDailyTotal() | currency }}</h3>
+</div>
+
+<button mat-button (click)="prevDay()">Previous</button>
+<button mat-button (click)="nextDay()">Next</button>
+
+<app-summary [weeklyExpenses]="expenses"></app-summary>
+<div>
+  <h3>Set Weekly Budget</h3>
+  <mat-form-field>
+    <mat-label>Weekly Budget</mat-label>
+    <input matInput type="number" [(ngModel)]="weeklyBudget" />
+  </mat-form-field>
+  <button mat-button (click)="setWeeklyBudget(weeklyBudget)">Save Budget</button>
+</div>
+
+<div>
+  <h3>Weekly Savings</h3>
+  <p>Savings: {{ getWeeklySavings() | currency }}</p>
+</div>

@@ -1,0 +1,8 @@
+<div>
+  <h3>Weekly Summary</h3>
+  <ul>
+    <li *ngFor="let expense of weeklyExpenses">
+      {{ expense.category }}: {{ expense.amount | currency }}
+    </li>
+  </ul>
+</div>

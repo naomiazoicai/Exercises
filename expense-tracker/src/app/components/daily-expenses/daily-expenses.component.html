@@ -1,0 +1,40 @@
+<mat-card>
+  <button mat-raised-button color="primary" (click)="isAddingExpense = !isAddingExpense">
+    Add Expense
+  </button>
+
+  <div *ngIf="isAddingExpense" class="expense-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Amount</mat-label>
+      <input matInput [(ngModel)]="amount" type="number" />
+    </mat-form-field>
+
+    <div class="form-buttons">
+      <button mat-raised-button color="primary" (click)="addExpense()">Save</button>
+      <button mat-button color="warn" (click)="clearForm(); isAddingExpense = false">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <ul class="expense-list">
+    <li *ngFor="let expense of expenses; let i = index">
+      {{ expense.category }} - ${{ expense.amount }}
+      <button mat-button color="accent" (click)="editExpense(i)">Edit</button>
+      <button mat-button color="warn" (click)="deleteExpense(i)">Delete</button>
+    </li>
+  </ul>
+
+  <mat-divider></mat-divider>
+
+  <div class="weekly-total">
+    Weekly Total: {{ getWeeklyTotal() | currency }}
+  </div>
+</mat-card>
