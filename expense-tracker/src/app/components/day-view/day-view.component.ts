@@ -1,66 +1,70 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ExpenseItemComponent} from '../expense-item/expense-item.component';
 import {ExpenseListComponent} from '../expense-list/expense-list.component';
 import {SummaryComponent} from '../summary/summary.component';
-import {MatButton} from '@angular/material/button';
-import {CurrencyPipe} from '@angular/common';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatInput} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {CurrencyPipe, NgForOf} from '@angular/common';
+import {MatCard} from '@angular/material/card';
 
 @Component({
   selector: 'app-day-view',
   templateUrl: './day-view.component.html',
   styleUrls: ['./day-view.component.scss'],
-  standalone: true,
-  imports: [MatLabel, CurrencyPipe, ExpenseItemComponent, ExpenseListComponent, SummaryComponent, MatButton, MatFormField, FormsModule, MatInput],
+  imports: [
+    MatTabGroup,
+    ExpenseItemComponent,
+    MatTab,
+    ExpenseListComponent,
+    SummaryComponent,
+    MatFormField,
+    FormsModule,
+    MatInput,
+    MatButton,
+    CurrencyPipe,
+    NgForOf,
+    MatLabel,
+    MatCard
+  ]
 })
 export class DayViewComponent {
   days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  currentDay = 0;
-  expenses: any[] = [];
+  currentDayIndex = 0;
+  dailyExpenses: any[][] = Array(7).fill([]);
+  weeklyBudget = 0;
 
-  addExpense(expense: any) {
-    this.expenses.push({ ...expense, day: this.days[this.currentDay] });
+  addExpense(dayIndex: number, expense: any) {
+    this.dailyExpenses[dayIndex] = [...this.dailyExpenses[dayIndex], expense];
   }
 
-  deleteExpense(index: number) {
-    this.expenses.splice(index, 1);
+  deleteExpense(dayIndex: number, expense: any) {
+    this.dailyExpenses[dayIndex] = this.dailyExpenses[dayIndex].filter((e) => e !== expense);
   }
 
-  editExpense(index: number) {
-    const updatedExpense = prompt('Enter new expense category and amount:', `${this.expenses[index].category},${this.expenses[index].amount}`);
-    if (updatedExpense) {
-      const [category, amount] = updatedExpense.split(',');
-      this.expenses[index] = { category, amount: parseFloat(amount) };
+  editExpense(dayIndex: number, updatedExpense: any) {
+    const index = this.dailyExpenses[dayIndex].findIndex((e) => e.id === updatedExpense.id);
+    if (index > -1) {
+      this.dailyExpenses[dayIndex][index] = updatedExpense;
     }
   }
 
-  nextDay() {
-    if (this.currentDay < this.days.length - 1) {
-      this.currentDay++;
-    }
+  getDailyTotal(dayIndex: number): number {
+    return this.dailyExpenses[dayIndex].reduce((total, expense) => total + expense.amount, 0);
   }
 
-  prevDay() {
-    if (this.currentDay > 0) {
-      this.currentDay--;
-    }
+  getWeeklyExpenses(): any[] {
+    return this.dailyExpenses.flat();
   }
 
-  getDailyTotal() {
-    return this.expenses.reduce((total, expense) => total + expense.amount, 0);
-  }
-
-  weeklyBudget: number = 0;
-
-  setWeeklyBudget(amount: number) {
-    this.weeklyBudget = amount;
-  }
-
-  getWeeklySavings() {
-    const totalSpent = this.expenses.reduce((total, exp) => total + exp.amount, 0);
+  getWeeklySavings(): number {
+    const totalSpent = this.getWeeklyExpenses().reduce((total, expense) => total + expense.amount, 0);
     return this.weeklyBudget - totalSpent;
   }
 
+  setWeeklyBudget() {
+    alert(`Weekly budget set to ${this.weeklyBudget}`);
+  }
 }

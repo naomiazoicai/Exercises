@@ -1,27 +1,44 @@
-<h2>{{ days[currentDay] }}</h2>
+<mat-tab-group [(selectedIndex)]="currentDayIndex" class="days-tabs">
+  <mat-tab *ngFor="let day of days; let i = index" [label]="day">
+    <div class="day-container">
+      <div class="day-header">
+        <h2 class="day-title">{{ day }}</h2>
+      </div>
 
-<app-expense-item (save)="addExpense($event)"></app-expense-item>
-<!--<app-daily-expenses></app-daily-expenses>-->
-<app-expense-list [expenses]="expenses" (deleteExpense)="deleteExpense($event)" (editExpense)="editExpense($event)"></app-expense-list>
+      <div class="add-expense-container">
+        <app-expense-item (save)="addExpense(i, $event)"></app-expense-item>
+      </div>
 
-<div>
-  <h3>Total: {{ getDailyTotal() | currency }}</h3>
-</div>
+      <mat-card class="daily-total-card">
+        <h3>Daily Total</h3>
+        <p>{{ getDailyTotal(i) | currency }}</p>
+      </mat-card>
 
-<button mat-button (click)="prevDay()">Previous</button>
-<button mat-button (click)="nextDay()">Next</button>
+      <div class="expense-list-container">
+        <app-expense-list
+          [expenses]="dailyExpenses[i]"
+          (deleteExpense)="deleteExpense(i, $event)"
+          (editExpense)="editExpense(i, $event)"
+        ></app-expense-list>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
 
-<app-summary [weeklyExpenses]="expenses"></app-summary>
-<div>
-  <h3>Set Weekly Budget</h3>
-  <mat-form-field>
-    <mat-label>Weekly Budget</mat-label>
-    <input matInput type="number" [(ngModel)]="weeklyBudget" />
-  </mat-form-field>
-  <button mat-button (click)="setWeeklyBudget(weeklyBudget)">Save Budget</button>
-</div>
+<mat-card class="weekly-summary-card">
+  <h2>Weekly Summary</h2>
+  <app-summary [weeklyExpenses]="getWeeklyExpenses()"></app-summary>
 
-<div>
-  <h3>Weekly Savings</h3>
-  <p>Savings: {{ getWeeklySavings() | currency }}</p>
-</div>
+  <div class="weekly-budget-container">
+    <mat-form-field>
+      <mat-label>Weekly Budget</mat-label>
+      <input matInput type="number" [(ngModel)]="weeklyBudget" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="setWeeklyBudget()">Set Budget</button>
+  </div>
+
+  <div class="weekly-savings">
+    <h3>Weekly Savings</h3>
+    <p>{{ getWeeklySavings() | currency }}</p>
+  </div>
+</mat-card>
